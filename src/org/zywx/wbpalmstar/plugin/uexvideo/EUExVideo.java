@@ -21,9 +21,11 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +36,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.zywx.wbpalmstar.base.BUtility;
@@ -53,11 +56,12 @@ import java.util.Date;
 public class EUExVideo extends EUExBase implements Parcelable {
 
     public static final int F_ACT_REQ_CODE_UEX_VIDEO_RECORD = 5;
+    private static final int REQUEST_VIDEO_PICKER = 1003;
     public static final String F_CALLBACK_NAME_VIDEO_RECORD_FINISH = "uexVideo.onRecordFinish";
     public static final String F_CALLBACK_ON_PLAYER_CLOSE = "uexVideo.onPlayerClose";
     public static final String F_CALLBACK_ON_PLAYER_STATUS_CHANGE = "uexVideo.onPlayerStatusChange";
     public static final String F_CALLBACK_ON_PLAYER_FINISH = "uexVideo.onPlayerFinish";
-
+    public static final String CALLBACK_ON_VIDEO_PICKER_CLOSED = "uexVideo.onVideoPickerClosed";
 
     private ResoureFinder finder;
 
@@ -243,6 +247,11 @@ public class EUExVideo extends EUExBase implements Parcelable {
         });
     }
 
+    public void videoPicker(String[] params){
+        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, REQUEST_VIDEO_PICKER);
+    }
+
     public void closePlayerCallBack(String src, int progress) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -345,9 +354,10 @@ public class EUExVideo extends EUExBase implements Parcelable {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == F_ACT_REQ_CODE_UEX_VIDEO_RECORD) {
-            JSONObject jsonObject = new JSONObject();
-            try {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            // 视频录制
+            if (requestCode == F_ACT_REQ_CODE_UEX_VIDEO_RECORD) {
                 //录制成功
                 if (resultCode == Activity.RESULT_OK) {
                     jsonObject.put("result", 0);
@@ -361,15 +371,47 @@ public class EUExVideo extends EUExBase implements Parcelable {
                     callBackPluginJs(F_CALLBACK_NAME_VIDEO_RECORD_FINISH, jsonObject.toString());
                     return;
                 }
-                //操作出错
-                if (requestCode == VideoCaptureActivity.RESULT_ERROR) {
-                    jsonObject.put("result", 2);
-                    callBackPluginJs(F_CALLBACK_NAME_VIDEO_RECORD_FINISH, jsonObject.toString());
-                    return;
-                }
-            } catch (JSONException e) {
-                Log.i(TAG, e.getMessage());
+                return;
             }
+            // 视频录制操作出错
+            if (requestCode == VideoCaptureActivity.RESULT_ERROR) {
+                jsonObject.put("result", 2);
+                callBackPluginJs(F_CALLBACK_NAME_VIDEO_RECORD_FINISH, jsonObject.toString());
+                return;
+            }
+            // 选择视频
+            if (requestCode == REQUEST_VIDEO_PICKER) {
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri selectedVideo = data.getData();
+                    String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                    Cursor cursor = mContext.getContentResolver().query(selectedVideo,
+                            filePathColumn, null, null, null);
+                    if (cursor == null) {
+                        errorCallback(0, 0, "uexImage 选择视频 失败");
+                        return;
+                    }
+                    try {
+                        JSONArray dataList = new JSONArray();
+                        while (cursor.moveToNext()) {
+                            JSONObject video = new JSONObject();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            String videoPath = cursor.getString(columnIndex);
+                            video.put("src", videoPath);
+                            dataList.put(video);
+                        }
+                        jsonObject.put("data", dataList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    cursor.close();
+                    jsonObject.put("isCancelled", false);
+                } else {
+                    jsonObject.put("isCancelled", true);
+                }
+                callBackPluginJsByJSON(CALLBACK_ON_VIDEO_PICKER_CLOSED, jsonObject.toString());
+            }
+        } catch (JSONException e) {
+            Log.i(TAG, e.getMessage());
         }
     }
 
@@ -391,6 +433,12 @@ public class EUExVideo extends EUExBase implements Parcelable {
     public void callBackPluginJs(String methodName, String jsonData) {
         String js = SCRIPT_HEADER + "if(" + methodName + "){"
                 + methodName + "('" + jsonData + "');}";
+        onCallback(js);
+    }
+
+    private void callBackPluginJsByJSON(String methodName, String jsonData){
+        String js = SCRIPT_HEADER + "if(" + methodName + "){"
+                + methodName + "(" + jsonData + ");}";
         onCallback(js);
     }
 

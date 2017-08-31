@@ -45,6 +45,9 @@ window.uexOnload = function() {
     uexVideo.onPlayerFinish = function() {
         alert("video completed!");
     }
+    uexVideo.onVideoPickerClosed = function(data) {
+        alert("onVideoPickerClosed ! " + JSON.stringify(data));
+    }
 }
     function recordVideo(){
         var params={
@@ -72,7 +75,10 @@ window.uexOnload = function() {
         }
         uexVideo.openPlayer(JSON.stringify(param));
     }
-		</script>
+    function videoPicker(){
+        uexVideo.videoPicker();
+    }
+</script>
 </head>
 <body class="um-vp " ontouchstart>
 <div class="conbor">
@@ -91,6 +97,9 @@ window.uexOnload = function() {
     <div>bitRateType:</div><input class="textbox" type="text" id="bitRateType" value="2"></input>
     <div>fileType:</div><input class="textbox" type="text" id="fileType" value="MP4"></input>
     <input class="btn" type="button" value="录视频" onclick="recordVideo();">
+    <div class="tcxx" id="info2"></div>
+    <span>3.选择视频</span>
+    <input class="btn" type="button" value="选视频" onclick="videoPicker();">
     <div class="tcxx" id="info2"></div>
 
 
