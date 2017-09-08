@@ -387,7 +387,7 @@ public class EUExVideo extends EUExBase implements Parcelable {
                     Cursor cursor = mContext.getContentResolver().query(selectedVideo,
                             filePathColumn, null, null, null);
                     if (cursor == null) {
-                        errorCallback(0, 0, "uexImage 选择视频 失败");
+                        errorCallback(0, 0, "uexVideo 选择视频 失败");
                         return;
                     }
                     try {
