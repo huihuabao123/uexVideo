@@ -22,6 +22,7 @@ import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -48,6 +49,8 @@ import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 import org.zywx.wbpalmstar.plugin.uexvideo.lib.VideoCaptureActivity;
 import org.zywx.wbpalmstar.plugin.uexvideo.lib.configuration.CaptureConfiguration;
 import org.zywx.wbpalmstar.plugin.uexvideo.lib.configuration.PredefinedCaptureConfigurations;
+import org.zywx.wbpalmstar.plugin.uexvideo.listener.OnPlayerListener;
+import org.zywx.wbpalmstar.plugin.uexvideo.util.UIUtils;
 import org.zywx.wbpalmstar.plugin.uexvideo.vo.OpenVO;
 
 import java.io.File;
@@ -73,12 +76,18 @@ public class EUExVideo extends EUExBase implements Parcelable {
     private String TAG = "EUExVideo";
 
     private boolean scrollWithWeb = false;
-
+    private boolean showCloseDialog=false;
     private String ViewPlayerViewTag = "Video_Player_View";
+    private OnPlayerListener onPlayerListener;
+
 
     public EUExVideo(Context context, EBrowserView inParent) {
         super(context, inParent);
         finder = ResoureFinder.getInstance(context);
+    }
+
+    public void setOnPlayerListener(OnPlayerListener onPlayerListener) {
+        this.onPlayerListener = onPlayerListener;
     }
 
     public static void onActivityResume(Context context) {
@@ -144,7 +153,6 @@ public class EUExVideo extends EUExBase implements Parcelable {
         int screenHeight = wm.getDefaultDisplay().getHeight();
         Log.i(TAG, "screenWidth:" + screenWidth + "     screenHeight:" + screenHeight);
         final OpenVO openVO = DataHelper.gson.fromJson(params[0], OpenVO.class);
-
         String src = openVO.src;
         if (TextUtils.isEmpty(src)) {
             errorCallback(0, EUExCallback.F_ERROR_CODE_VIDEO_OPEN_ARGUMENTS_ERROR, finder.getString("path_error"));
@@ -156,7 +164,7 @@ public class EUExVideo extends EUExBase implements Parcelable {
         boolean forceFullScreen = openVO.forceFullScreen;
         boolean showCloseButton = openVO.showCloseButton;
         boolean showScaleButton = openVO.showScaleButton;
-
+        showCloseDialog=openVO.showCloseDialog;
         final int width = (int) openVO.width;
         //final int width = px2dip(mContext, (float) openVO.width);
         final int height = (int) openVO.height;
@@ -197,7 +205,6 @@ public class EUExVideo extends EUExBase implements Parcelable {
                 }
                 Window window = mgr.startActivity("TAG_Video", intent);
                 mMapDecorView = window.getDecorView();
-
                 RelativeLayout.LayoutParams lp;
                 if (openVO.forceFullScreen) {
                     lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -235,7 +242,26 @@ public class EUExVideo extends EUExBase implements Parcelable {
         mBrwView.addViewToCurrentWindow(child, lp);
     }
 
+    public void closePlayerWarn(String[] params){
+        onPlayerListener.onPlayerCloseWarn();
+    }
 
+    public void seekTo(String[] params){
+        if (params == null || params.length < 1) {
+            errorCallback(0, 0, "error params!");
+            return;
+        }
+        int position=Integer.parseInt(params[0]);
+        onPlayerListener.onPlayerSeek(position);
+    }
+
+    public boolean isVideoOpen(String[] params){
+        boolean isVideoOpen=false;
+        if (mMapDecorView != null) {
+            isVideoOpen=true;
+        }
+        return isVideoOpen;
+    }
     /**
      * 关闭播放器
      */
@@ -255,6 +281,7 @@ public class EUExVideo extends EUExBase implements Parcelable {
             }
         });
     }
+
 
     public void videoPicker(String[] params) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);

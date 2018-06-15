@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
 
+    <!-- uexVideo -->
     <string name="plugin_video_video_load_fail">视频加载失败!</string>
     <string name="plugin_video_can_not_support_this_format_video_playback">很抱歉 ,播放失败,可能不支持此视频格式!</string>
     <string name="plugin_video_mediaplayer_occur_unknown_error">很抱歉 , 播放器发生未知异常!</string>
