@@ -1306,7 +1306,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         /**
          * 进来第一次显示以后再也不显示
          */
-//        switchControllersVisiblity();
+        switchControllersVisiblity();
         notifyHideControllers();
     }
 

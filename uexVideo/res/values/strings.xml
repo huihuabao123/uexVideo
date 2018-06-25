@@ -8,5 +8,5 @@
     <string name="plugin_video_player_player_state_call_error">播放器调用状态错误!</string>
     <string name="plugin_video_file_path_is_not_exist">文件路径不存在!</string>
     <string name="plugin_video_file_now_loading_please_wait">正在加载,请稍候...</string>
-  
+ 
 </resources>

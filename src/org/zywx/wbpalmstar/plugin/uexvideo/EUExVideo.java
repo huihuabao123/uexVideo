@@ -22,7 +22,6 @@ import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -50,7 +49,6 @@ import org.zywx.wbpalmstar.plugin.uexvideo.lib.VideoCaptureActivity;
 import org.zywx.wbpalmstar.plugin.uexvideo.lib.configuration.CaptureConfiguration;
 import org.zywx.wbpalmstar.plugin.uexvideo.lib.configuration.PredefinedCaptureConfigurations;
 import org.zywx.wbpalmstar.plugin.uexvideo.listener.OnPlayerListener;
-import org.zywx.wbpalmstar.plugin.uexvideo.util.UIUtils;
 import org.zywx.wbpalmstar.plugin.uexvideo.vo.OpenVO;
 
 import java.io.File;
