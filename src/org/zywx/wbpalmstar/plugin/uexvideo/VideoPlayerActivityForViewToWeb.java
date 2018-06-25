@@ -192,7 +192,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         Log.e(TAG,"position:"+position+"  curPosition:"+mediaPlayer.getCurrentPosition());
         curerntState = STATE_PLAYING;
         onPlayerStatusChange(PLAYER_STATUS_PLAYING);
-        m_ivPlayPause.setBackgroundDrawable(finder.getDrawable("plugin_video_pause"));
+//        m_ivPlayPause.setBackgroundDrawable(finder.getDrawable("plugin_video_pause"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("pause_bot"));
         ivPlay.setVisibility(View.GONE);
         handler.sendEmptyMessage(ACTION_UPDATE_PASS_TIME);
     }
@@ -604,13 +605,17 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
                 onPlayerStatusChange(PALYER_STATUS_ERROR);
                 Log.i(TAG, "video player occur unkwon error:" + e.getMessage());
             }
-            m_ivPlayPause.setBackgroundDrawable(finder.getDrawable("plugin_video_pause"));
+//            m_ivPlayPause.setBackgroundDrawable(finder.getDrawable("plugin_video_pause"));
+            m_ivPlayPause.setImageResource(finder.getDrawableId("pause_bot"));
+
             handler.sendEmptyMessage(ACTION_UPDATE_PASS_TIME);
         } else {
             curerntState = STATE_PAUSE;
             mediaPlayer.seekTo((int) (startTime * 1000));
             startTime = 0;
-            m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+//            m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+            m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
+
         }
         handler.post(showLyricTextRunnable);
         passTime = mediaPlayer.getCurrentPosition();
@@ -888,7 +893,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     private void pauseVideoHandler() {
         mediaPlayer.pause();
         curerntState = STATE_PAUSE;
-        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+//        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
         ivPlay.setVisibility(View.VISIBLE);
         onPlayerStatusChange(PLAYER_STATUS_PAUSE);
         notifyHideControllers();
@@ -905,7 +911,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         curerntState = STATE_PLAYING;
         ivPlay.setVisibility(View.GONE);
         onPlayerStatusChange(PLAYER_STATUS_PLAYING);
-        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_pause"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("plugin_video_pause"));
         handler.sendEmptyMessage(ACTION_UPDATE_PASS_TIME);
         notifyHideControllers();
     }
@@ -968,7 +974,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         passTime = 0;
         m_sbTimeLine.setProgress(passTime);//重新显示控制条
         switchControllersVisiblity();
-        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+//        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
         mUexBaseObj.callBackPluginJs(EUExVideo.F_CALLBACK_ON_PLAYER_ENDTIME, "");
 
     }
@@ -993,7 +1000,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         passTime = 0;
         m_sbTimeLine.setProgress(passTime);//重新显示控制条
         switchControllersVisiblity();
-        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+//        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
         mUexBaseObj.callBackPluginJs(EUExVideo.F_CALLBACK_ON_PLAYER_FINISH, "");
         if (isAutoEndFullScreen && displayMode == MODE_FULL_SCEEN && !forceFullScreen) {//切换成非全屏
             new Handler().postDelayed(new Runnable() {
@@ -1295,7 +1303,10 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
 
     @Override
     public void onSingleTapGesture(MotionEvent e) {
-        switchControllersVisiblity();
+        /**
+         * 进来第一次显示以后再也不显示
+         */
+//        switchControllersVisiblity();
         notifyHideControllers();
     }
 
