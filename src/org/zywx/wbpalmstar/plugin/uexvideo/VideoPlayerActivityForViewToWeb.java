@@ -911,7 +911,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         curerntState = STATE_PLAYING;
         ivPlay.setVisibility(View.GONE);
         onPlayerStatusChange(PLAYER_STATUS_PLAYING);
-        m_ivPlayPause.setImageResource(finder.getDrawableId("plugin_video_pause"));
+        m_ivPlayPause.setImageResource(finder.getDrawableId("pause_bot"));
         handler.sendEmptyMessage(ACTION_UPDATE_PASS_TIME);
         notifyHideControllers();
     }
@@ -1188,7 +1188,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         // 取消之前发送的还未被处理的消息
         handler.removeMessages(ACTION_HIDE_CONTROLLER);
         // 播放时才发送隐藏消息
-        if (curerntState == STATE_PLAYING) {
+        if (curerntState == STATE_PLAYING || curerntState==STATE_PAUSE) {
             handler.sendEmptyMessageDelayed(ACTION_HIDE_CONTROLLER, CONTROLLERS_HIDE_DURATION);
         }
     }
