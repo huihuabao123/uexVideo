@@ -254,7 +254,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         }
         videoPath = config.src;
         if (TextUtils.isEmpty(videoPath)) {
-            Log.i(TAG, "[invalid params]: videoPath can not be null");
+//            Log.i(TAG, "[invalid params]: videoPath can not be null");
             alertMessage("invalid params", true);
         }
 
@@ -302,7 +302,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenHeight = metrics.heightPixels;
         screenWidth = metrics.widthPixels;
-        Log.i(TAG, "setScreenSize:" + screenWidth + "," + screenHeight);
+//        Log.i(TAG, "setScreenSize:" + screenWidth + "," + screenHeight);
     }
 
     Runnable checkPlayTimeRunnable = new Runnable() {
@@ -458,7 +458,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         if (surfaceHolder == null) {
             return;
         }
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer =new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnErrorListener(this);
         mediaPlayer.setOnPreparedListener(this);
@@ -618,6 +618,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
 
         }
         handler.post(showLyricTextRunnable);
+
         passTime = mediaPlayer.getCurrentPosition();
         totalTime = mediaPlayer.getDuration();
         m_tvPassTime.setText(formatTime(passTime) + "/" + formatTime(totalTime));
@@ -640,6 +641,10 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             mediaPlayer.release();
             curerntState = STATE_RELEASED;
             mediaPlayer = null;
+        }
+        if (handler != null) {
+            handler.removeCallbacks(checkPlayTimeRunnable);
+            handler.removeCallbacks(showLyricTextRunnable);
         }
     }
 
@@ -681,14 +686,12 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         super.onPause();
     }
 
+
     @Override
     protected void onDestroy() {
         UIUtils.resetStatusBar(this.getParent());
         super.onDestroy();
-        if (handler != null) {
-            handler.removeCallbacks(checkPlayTimeRunnable);
-            handler.removeCallbacks(showLyricTextRunnable);
-        }
+
         cancelProgressDialog();
         if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
@@ -721,8 +724,15 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     }
 
     private void playVideoByCurLyric(int curLyricIndex) {
+        if(lyricList==null || lyricList.size()==0){
+            tvLyric.setVisibility(View.GONE);
+            return;
+        }else {
+            tvLyric.setVisibility(View.VISIBLE);
+        }
         Lyric lyric = lyricList.get(curLyricIndex);
         tvLyric.setText(lyric.getLyricEnglishText());
+
         double lyricStartTime = Double.parseDouble(lyric.getLyricStartTime());
         int lyricSeededPosition=(int)(lyricStartTime*1000);
         onPlayerSeek(lyricSeededPosition);
@@ -750,8 +760,12 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
      */
     private int getLyricIndexByPosition() {
         int lyricIndex = 0;
-        int position = mediaPlayer.getCurrentPosition();
-        Log.e(TAG,"position:"+position);
+        if(mediaPlayer==null){
+            return 0;
+        }
+        int position = mediaPlayer.
+                getCurrentPosition();
+//        Log.e(TAG,"position:"+position);
         Lyric lyric = null, lyricNext = null;
         float startTime, endTime, nextStartTime;
         for (int i = 0; i < lyricListSize; i++) {
@@ -787,6 +801,12 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
      * 显示歌词字幕
      */
     private void showLyricText() {
+        if(lyricList==null || lyricList.size()==0){
+            tvLyric.setVisibility(View.GONE);
+            return;
+        }else {
+            tvLyric.setVisibility(View.VISIBLE);
+        }
         int curLyricIndex = getLyricIndexByPosition();
         Lyric lyric = lyricList.get(curLyricIndex);
         float startTime = Float.parseFloat(lyric.getLyricStartTime()) * 1000;
@@ -1252,7 +1272,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         int newVolume = (int) ((e1.getY() - e2.getY())/value + oldVolume);
 
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,newVolume,AudioManager.FLAG_PLAY_SOUND);
-//        Log.d(TAG, "onVolumeGesture: value" + value);
+        Log.d(TAG, "onVolumeGesture: value" + value);
         Log.d(TAG, "onVolumeGesture: newVolume "+ newVolume);
 
         //要强行转Float类型才能算出小数点，不然结果一直为0

@@ -183,16 +183,19 @@
         </LinearLayout>
     </RelativeLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
     <!-- 进度控制 -->
     <RelativeLayout
         android:id="@+id/plugin_video_player_bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dip"
-        android:layout_centerInParent="true"
-        android:layout_above="@+id/plugin_video_player_lyric_layout"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="100dip"
-        android:layout_marginRight="100dip"
-        >
+        android:layout_marginRight="100dip">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32dip"
@@ -209,7 +212,7 @@
             android:layout_marginLeft="3dp"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/pause_mid" />
+            android:src="@drawable/pause_bot" />
 
         <SeekBar
             android:id="@+id/plugin_video_player_sb_timeline"
@@ -242,7 +245,7 @@
             android:singleLine="true"
             android:text="00:00"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="18sp" />
         <!-- 调整屏幕默认隐藏 -->
         <ImageView
             android:id="@+id/plugin_video_player_iv_screen_adjust"
@@ -259,8 +262,7 @@
         android:id="@+id/plugin_video_player_lyric_layout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:background="@android:color/transparent"
-        android:layout_alignParentBottom="true">
+        android:background="@android:color/transparent">
 
         <TextView
             android:layout_width="match_parent"
@@ -276,6 +278,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="5dip"
             android:alpha="0.8"
+            android:visibility="gone"
             android:background="@drawable/pre_lyric" />
 
         <TextView
@@ -285,6 +288,7 @@
             android:layout_centerInParent="true"
             android:singleLine="true"
             android:text=""
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
@@ -297,7 +301,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="5dip"
+            android:visibility="gone"
             android:background="@drawable/next_lyric" />
     </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
