@@ -690,7 +690,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     @Override
     protected void onDestroy() {
         //恢复状态栏
-        UIUtils.resetStatusBar(this.getParent());
+//        UIUtils.resetStatusBar(this.getParent());
         super.onDestroy();
 
         cancelProgressDialog();
