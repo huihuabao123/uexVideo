@@ -184,16 +184,12 @@
     </RelativeLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
     <!-- 进度控制 -->
     <RelativeLayout
         android:id="@+id/plugin_video_player_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/plugin_video_player_lyric_layout"
         android:layout_marginLeft="100dip"
         android:layout_marginRight="100dip">
         <TextView
@@ -262,6 +258,7 @@
         android:id="@+id/plugin_video_player_lyric_layout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
         android:background="@android:color/transparent">
 
         <TextView
@@ -304,6 +301,6 @@
             android:visibility="gone"
             android:background="@drawable/next_lyric" />
     </RelativeLayout>
-    </LinearLayout>
+
 
 </RelativeLayout>

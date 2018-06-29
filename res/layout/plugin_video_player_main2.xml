@@ -17,11 +17,10 @@
         android:id="@+id/plugin_video_player_title_bar"
         android:layout_width="match_parent"
         android:layout_height="70dip"
-        android:background="@android:color/transparent"
-        >
+        android:background="@android:color/transparent">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="70dip"
+            android:layout_height="match_parent"
             android:background="@color/black"
             android:alpha="0.2"
             />
@@ -33,14 +32,14 @@
             <ImageView
                 android:id="@+id/plugin_video_player_iv_close"
                 android:layout_width="50dip"
-                android:layout_height="50dip"
+                android:layout_height="match_parent"
                 android:alpha="0.8"
                 android:src="@drawable/app_back" />
 
             <TextView
                 android:id="@+id/plugin_video_player_title"
                 android:layout_width="wrap_content"
-                android:layout_height="50dip"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="标题"
@@ -195,9 +194,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32dip"
+            android:padding="1dp"
             android:layout_centerInParent="true"
             android:alpha="0.2"
             android:background="@drawable/shape_progress"/>
+
 
 
         <ImageView
@@ -263,14 +264,14 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dip"
+            android:layout_height="match_parent"
             android:alpha="0.2"
             android:background="#000" />
 
         <ImageView
             android:id="@+id/plugin_video_player_pre"
             android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_marginLeft="5dip"
@@ -293,7 +294,7 @@
         <ImageView
             android:id="@+id/plugin_video_player_next"
             android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_height="match_parent"
             android:alpha="0.8"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"

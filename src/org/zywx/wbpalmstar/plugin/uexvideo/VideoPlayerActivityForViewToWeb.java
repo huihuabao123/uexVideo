@@ -689,6 +689,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
 
     @Override
     protected void onDestroy() {
+        //恢复状态栏
         UIUtils.resetStatusBar(this.getParent());
         super.onDestroy();
 
@@ -765,7 +766,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         }
         int position = mediaPlayer.
                 getCurrentPosition();
-//        Log.e(TAG,"position:"+position);
+        Log.i(TAG,"position:"+position);
         Lyric lyric = null, lyricNext = null;
         float startTime, endTime, nextStartTime;
         for (int i = 0; i < lyricListSize; i++) {
@@ -1020,7 +1021,6 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         passTime = 0;
         m_sbTimeLine.setProgress(passTime);//重新显示控制条
         switchControllersVisiblity();
-//        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
         m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
         mUexBaseObj.callBackPluginJs(EUExVideo.F_CALLBACK_ON_PLAYER_FINISH, "");
         if (isAutoEndFullScreen && displayMode == MODE_FULL_SCEEN && !forceFullScreen) {//切换成非全屏
