@@ -192,7 +192,6 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         Log.e(TAG,"position:"+position+"  curPosition:"+mediaPlayer.getCurrentPosition());
         curerntState = STATE_PLAYING;
         onPlayerStatusChange(PLAYER_STATUS_PLAYING);
-//        m_ivPlayPause.setBackgroundDrawable(finder.getDrawable("plugin_video_pause"));
         m_ivPlayPause.setImageResource(finder.getDrawableId("pause_bot"));
         ivPlay.setVisibility(View.GONE);
         handler.sendEmptyMessage(ACTION_UPDATE_PASS_TIME);
@@ -373,6 +372,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         m_bottomLayer = (RelativeLayout) findViewById(finder.getId("plugin_video_player_bottom_layout"));//视频播放进度条控制栏
         m_bottomLayer.setOnClickListener(this);
         m_tvPassTime = (TextView) findViewById(finder.getId("plugin_video_player_tv_pass_time")); //播放进度时间显示
+
         m_sbTimeLine = (SeekBar) findViewById(finder.getId("plugin_video_player_sb_timeline"));//播放进度条
         if (canSeek) {
             m_sbTimeLine.setOnSeekBarChangeListener(this);
@@ -577,7 +577,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     public void onPrepared(MediaPlayer mp) {
         cancelProgressDialog();// 取消进度框
         curerntState = STATE_PREPARED;
-        m_sbTimeLine.setMax((int) (Math.ceil(mediaPlayer.getDuration() / 1000.0) * 1000));
+//        m_sbTimeLine.setMax((int)(mediaPlayer.getDuration() / 1000.0) * 1000);
+        m_sbTimeLine.setMax(mediaPlayer.getDuration());
         notifyStopMusicPlay();
         //初始尺寸为用户传进来的宽高
         if (forceFullScreen) {
@@ -922,7 +923,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     }
 
     private void playVideoHandler() {
-        if (startTime != 0) {
+        if (startTime != 0 ) {
             mediaPlayer.seekTo((int) (startTime * 1000));
             Log.d(TAG, "curLyricIndex--startTime"+startTime * 1000);
             startTime = 0;
@@ -960,6 +961,12 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         handler.removeMessages(ACTION_HIDE_CONTROLLER);
     }
 
+    /**
+     * Seek的监听器
+     * @param seekBar
+     * @param progress
+     * @param fromUser
+     */
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser && (curerntState == STATE_PLAYING || curerntState == STATE_PAUSE)) {
@@ -967,6 +974,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             m_tvPassTime.setText(formatTime(passTime) + "/" + formatTime(totalTime));
             seekBar.setProgress(progress);
         }
+
     }
 
     @Override
@@ -975,14 +983,17 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             if (endTime != 0 && endTime < passTime) {
                 onPlayEndTime();
             } else {
-                mediaPlayer.seekTo(seekBar.getProgress());
+                Log.i(TAG,"onStopTrackingTouch=视频的总时间:"+totalTime+"；进度条拖动之后的时间:"+seekBar.getProgress()+"；seekBar进度的时间："+passTime);
+                /**
+                 * 视频拖动最大值为{视频的总时间-1000}
+                 */
+                mediaPlayer.seekTo(seekBar.getProgress()-1000);
                 if(hasLyric){
                     showLyricText();
                 }
             }
             isUserSeekingBar = false;
         }
-        notifyHideControllers();
     }
 
 
@@ -995,7 +1006,6 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         passTime = 0;
         m_sbTimeLine.setProgress(passTime);//重新显示控制条
         switchControllersVisiblity();
-//        m_ivPlayPause.setBackgroundResource(finder.getDrawableId("plugin_video_play"));
         m_ivPlayPause.setImageResource(finder.getDrawableId("play_bot"));
         mUexBaseObj.callBackPluginJs(EUExVideo.F_CALLBACK_ON_PLAYER_ENDTIME, "");
 
@@ -1016,7 +1026,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         ivPreLyric.setVisibility(View.GONE);
         ivNextLyric.setVisibility(View.VISIBLE);
         curerntState = STATE_PAUSE;
-        mediaPlayer.seekTo(1);//回到第一帧
+        mediaPlayer.seekTo(mediaPlayer.getDuration());//回到第一帧
         startTime = 0;
         passTime = 0;
         m_sbTimeLine.setProgress(passTime);//重新显示控制条
