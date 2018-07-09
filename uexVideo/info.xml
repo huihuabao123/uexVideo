@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-    <plugin uexName="uexVideo" version="4.2.2" build = "22">
+    <plugin uexName="uexVideo" version="4.2.3" build = "23">
+        <info>23:UI界面优化</info>
         <info>22:三星手机的bug</info>
         <info>21:会员功能UI样式调整及上一句功能和titleBar显示的状态</info>
         <info>20:新版本uexVideo插件,退出时恢复状态栏</info>

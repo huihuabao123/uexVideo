@@ -223,7 +223,7 @@ public class VideoPlayerActivity extends Activity implements OnPreparedListener,
 		mediaPlayer.setOnBufferingUpdateListener(this);
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		try {
-			if (path.startsWith(BUtility.F_HTTP_PATH) || path.startsWith(BUtility.F_FILE_SCHEMA)
+			if (path.startsWith(BUtility.F_HTTP_PATH)  || path.startsWith(BUtility.F_FILE_SCHEMA)
 					|| path.startsWith(BUtility.F_RTSP_PATH) || path.startsWith("/")) {// 直接设置路径
 				if (path.startsWith(BUtility.F_FILE_SCHEMA) || path.startsWith("/")) {
 					path = path.replace("file://", "");

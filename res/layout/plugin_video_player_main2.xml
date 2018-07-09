@@ -30,9 +30,11 @@
             android:layout_centerVertical="true"
             android:layout_height="50dip">
             <ImageView
+                android:layout_marginLeft="10dp"
                 android:id="@+id/plugin_video_player_iv_close"
-                android:layout_width="50dip"
-                android:layout_height="match_parent"
+                android:layout_width="40dip"
+                android:padding="2dp"
+                android:layout_height="50dp"
                 android:alpha="0.8"
                 android:src="@drawable/app_back" />
 
@@ -258,8 +260,9 @@
     <!-- 字幕 -->
     <RelativeLayout
         android:id="@+id/plugin_video_player_lyric_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
+        android:layout_width="match_parent"
+        android:layout_height="55dip"
+        android:padding="2dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent">
 
@@ -295,6 +298,7 @@
         <ImageView
             android:id="@+id/plugin_video_player_next"
             android:layout_width="50dip"
+            android:padding="2dp"
             android:layout_height="match_parent"
             android:alpha="0.8"
             android:layout_alignParentRight="true"
