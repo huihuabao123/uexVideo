@@ -157,6 +157,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
     private RelativeLayout pluginVideoLayout;
     private int lyricListSize;
     private RelativeLayout titleBar;
+    private RelativeLayout shade;
     private TextView tvTitle;
     private ImageView ivPlay;
     private TextView tvBufferProgress;
@@ -217,6 +218,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
                     m_bottomLayer.setAnimation(fadeOutAnim);
                     titleBar.setVisibility(View.GONE);
                     titleBar.setAnimation(fadeOutAnim);
+                    shade.setVisibility(View.GONE);
+                    shade.setAnimation(fadeOutAnim);
                     UIUtils.hideStatusBar(VideoPlayerActivityForViewToWeb.this);
                     break;
             }
@@ -352,8 +355,10 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         });
         //标题栏相关
         titleBar = (RelativeLayout) findViewById(finder.getId("plugin_video_player_title_bar"));
+        shade=(RelativeLayout) findViewById(finder.getId("rl_shade"));
         if (showCloseButton) {
             titleBar.setVisibility(View.VISIBLE);
+            shade.setVisibility(View.VISIBLE);
         }
         ivClose = (ImageView) findViewById(finder.getId("plugin_video_player_iv_close"));
         ivClose.setOnClickListener(this);
@@ -1201,12 +1206,16 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             m_bottomLayer.startAnimation(fadeInAnim);
             titleBar.setVisibility(View.VISIBLE);
             titleBar.setAnimation(fadeInAnim);
+            shade.setVisibility(View.VISIBLE);
+            shade.setAnimation(fadeInAnim);
             UIUtils.showStatusBar(this);
         } else {
             m_bottomLayer.setVisibility(View.GONE);
             m_bottomLayer.startAnimation(fadeOutAnim);
             titleBar.setVisibility(View.GONE);
             titleBar.setAnimation(fadeOutAnim);
+            shade.setVisibility(View.GONE);
+            shade.setAnimation(fadeOutAnim);
             UIUtils.hideStatusBar(this);
         }
     }
