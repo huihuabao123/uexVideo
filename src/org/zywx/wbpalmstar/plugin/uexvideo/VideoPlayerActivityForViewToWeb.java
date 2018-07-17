@@ -1368,6 +1368,8 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             //一开始是默认亮度的时候，获取系统亮度，计算比例值
             brightness = BrightnessUtils.getBrightness(this.getParent()) / BrightnessUtils.getMaxBrightness();
         }
+        switchControllersVisiblity();
+        notifyHideControllers();
     }
 
 
