@@ -34,6 +34,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.media.TimedText;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -1208,7 +1209,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             titleBar.setAnimation(fadeInAnim);
             shade.setVisibility(View.VISIBLE);
             shade.setAnimation(fadeInAnim);
-            UIUtils.showStatusBar(this);
+//            UIUtils.showStatusBar(this);
         } else {
             m_bottomLayer.setVisibility(View.GONE);
             m_bottomLayer.startAnimation(fadeOutAnim);
@@ -1216,7 +1217,7 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             titleBar.setAnimation(fadeOutAnim);
             shade.setVisibility(View.GONE);
             shade.setAnimation(fadeOutAnim);
-            UIUtils.hideStatusBar(this);
+//            UIUtils.hideStatusBar(this);
         }
     }
 
@@ -1368,8 +1369,16 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
             //一开始是默认亮度的时候，获取系统亮度，计算比例值
             brightness = BrightnessUtils.getBrightness(this.getParent()) / BrightnessUtils.getMaxBrightness();
         }
-        switchControllersVisiblity();
-        notifyHideControllers();
+
+        /**
+         * 对特定平板的处理
+         */
+        String outStr = Build.MODEL;
+        Log.d(TAG,"当前设备型号名称："+outStr);
+        if("AGS-L09".equals(outStr)){
+            switchControllersVisiblity();
+            notifyHideControllers();
+        }
     }
 
 

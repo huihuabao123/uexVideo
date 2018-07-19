@@ -53,7 +53,8 @@ public class VideoPlayerOnGestureListener extends SimpleOnGestureListener {
         if (mVideoGestureListener != null) {
             mVideoGestureListener.onDown(e);
         }
-        return true;
+//        return super.onDown(e);
+        return false;
     }
 
     @Override
@@ -95,14 +96,15 @@ public class VideoPlayerOnGestureListener extends SimpleOnGestureListener {
                 Log.d(TAG, "FF_REW: ");
                 break;
         }
-        return true;
+//        return true;
+        return false;
     }
 
 
     @Override
     public boolean onContextClick(MotionEvent e) {
         Log.d(TAG, "onContextClick: ");
-        return true;
+        return false;
     }
 
     @Override
@@ -111,7 +113,8 @@ public class VideoPlayerOnGestureListener extends SimpleOnGestureListener {
         if (mVideoGestureListener != null) {
             mVideoGestureListener.onDoubleTapGesture(e);
         }
-        return super.onDoubleTap(e);
+//        return super.onDoubleTap(e);
+        return false;
     }
 
     @Override
@@ -152,6 +155,7 @@ public class VideoPlayerOnGestureListener extends SimpleOnGestureListener {
         if (mVideoGestureListener != null) {
             mVideoGestureListener.onSingleTapGesture(e);
         }
-        return super.onSingleTapConfirmed(e);
+//        return super.onSingleTapConfirmed(e);
+        return false;
     }
 }
