@@ -1203,20 +1203,20 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
 
     private void switchControllersVisiblity() {
         if (m_bottomLayer.getVisibility() == View.GONE) {
+            shade.setVisibility(View.VISIBLE);
+            shade.setAnimation(fadeInAnim);
             m_bottomLayer.setVisibility(View.VISIBLE);
             m_bottomLayer.startAnimation(fadeInAnim);
             titleBar.setVisibility(View.VISIBLE);
             titleBar.setAnimation(fadeInAnim);
-            shade.setVisibility(View.VISIBLE);
-            shade.setAnimation(fadeInAnim);
 //            UIUtils.showStatusBar(this);
         } else {
+            shade.setVisibility(View.GONE);
+            shade.setAnimation(fadeOutAnim);
             m_bottomLayer.setVisibility(View.GONE);
             m_bottomLayer.startAnimation(fadeOutAnim);
             titleBar.setVisibility(View.GONE);
             titleBar.setAnimation(fadeOutAnim);
-            shade.setVisibility(View.GONE);
-            shade.setAnimation(fadeOutAnim);
 //            UIUtils.hideStatusBar(this);
         }
     }
@@ -1373,12 +1373,11 @@ public class VideoPlayerActivityForViewToWeb extends Activity implements OnPrepa
         /**
          * 对特定平板的处理
          */
-        String outStr = Build.MODEL;
-        Log.d(TAG,"当前设备型号名称："+outStr);
-        if("AGS-L09".equals(outStr)){
-            switchControllersVisiblity();
-            notifyHideControllers();
-        }
+//        String outStr = Build.MODEL;
+//        Log.d(TAG,"当前设备型号名称："+outStr);
+//        if("AGS-L09".equals(outStr)){
+//            switchControllersVisiblity();
+//        }
     }
 
 

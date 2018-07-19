@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <uexplugins>
-    <plugin uexName="uexVideo" version="4.2.6" build = "26">
+    <plugin uexName="uexVideo" version="4.2.7" build = "27">
+        <info>27:平板兼容性的bug</info>
         <info>26:平板的进度条显示异常</info>
         <info>25:UI界面字幕添加遮罩</info>
         <info>24:UI界面添加遮罩功能</info>
